@@ -1,6 +1,7 @@
 package it.unibo.mvc;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import it.unibo.mvc.api.DrawNumberController;
 import it.unibo.mvc.api.DrawNumberView;
@@ -27,14 +28,14 @@ public final class LaunchApp {
      */
     public static void main(final String... args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         final var model = new DrawNumberImpl();
-        final DrawNumberController app = new DrawNumberControllerImpl(model);;
-        for (int i = 0; i < 3; i++) {
-            final var viewType = Class.forName("it.unibo.mvc.view.DrawNumberSwingView");
-            final var newView = viewType.getConstructor().newInstance();
-            app.addView((DrawNumberView) newView);
-            final var viewType2 = Class.forName("it.unibo.mvc.view.DrawNumberConsoleView");
-            final var newView2 = viewType2.getConstructor().newInstance();
-            app.addView((DrawNumberView) newView2);
+        final DrawNumberController app = new DrawNumberControllerImpl(model);
+        List<String> viewTypes = List.of("DrawNumberSwingView", "DrawNumberConsoleView");
+        for (String viewType : viewTypes) {
+            for (int i = 0; i < 3; i++) {
+                final var type = Class.forName("it.unibo.mvc.view." + viewType);
+                final var newView = type.getConstructor().newInstance();
+                app.addView((DrawNumberView) newView);
+            }
         }
     }
 }
