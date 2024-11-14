@@ -39,7 +39,7 @@ public final class Death {
 
     public Death withCause(final String cause){
         if (System.currentTimeMillis() < this.deathTime + CAUSE_DELAY){
-            return new Death(cause, this.details, this.deathTime);
+            return new Death(cause, this.details, System.currentTimeMillis());
         } else {
             return this;
         }
